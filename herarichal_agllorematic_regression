@@ -1,0 +1,26 @@
+###-----------------------------------Problem Statement============================###
+### '''You are data sciencetist in retail company, and the marketing team is looking to optomise,
+### there promotional campaing by targeting there specific costomer segment.
+### The goal is to optimse distinct groups based on there demograpic information such as age,
+### income and their spending score'''
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.cluster import AgglomerativeClustering
+from sklearn.preprocessing import StandardScaler
+np.random.seed(42)
+data= pd.DataFrame({'age':np.random.randint(18,25,100),
+                    'income':np.random.randint(30000,100000,100),
+                    'spending_score':np.random.randint(1,100,100)})
+scaller = StandardScaler()
+scaled_data=scaller.fit_transform(data)
+clustering = AgglomerativeClustering(n_clusters=3, metric='euclidean', linkage='ward')
+data['cluster']=clustering.fit_predict(scaled_data)
+# plt.bar(data['income'],data['spending_score'],C=data['cluster'],cmap='viridis')
+# plt.show()
+new_user= pd.DataFrame({'age':[float(input('Enter user age: '))],
+                        'income':[float(input('Enter user Income: '))],
+                        'spending_score':[int(input('Enter User Spending Score: '))]})
+scaled_new_costomer= scaller.transform(new_user)
+predicted_cluster=  clustering.fit_predict(scaled_new_costomer)
+print(f'The New Costomer predicted Cluster is{predicted_cluster[0]}')
